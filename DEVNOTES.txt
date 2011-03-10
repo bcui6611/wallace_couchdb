@@ -1,0 +1,306 @@
+DEVNOTES
+
+2009/10/22 - steve.yen: notes on how I got my dev environment going.
+2009/12/15 - steve.yen: updates
+
+---------------------------------
+Directory Layout:
+
+wallace/
+  README.txt
+  DEVNOTES.txt   -- this file
+  Manifest.rb    -- describes components that need to be collected
+  Manifest_*.rb  -- platform-dependent description loaded by Manifest.rb
+  features/      -- cucumber feature specifications
+  components/    -- files or parts for the is_* projects
+  components/tmp -- staging area
+  is_devkit/     -- installshield project for the devkit setup.exe
+  is_devkit_mm/  -- installshield project for the devkit merge module
+  is_server/     -- installshield project for the server setup.exe
+  is_server_mm/  -- installshield project for the server merge module
+
+grommit/ The grommit git repository is a sibling directory of wallace
+  where slow-changing external dependencies live.
+
+grommix/ The grommix sibling directory of wallace is where wallace
+  caches previously compiled artifacts.  This is useful during
+  development for faster turnaround.
+
+The Manifest.rb file explicitly lists the parts that will be
+installed.  The Manifest.rb should be updated/edited as installed
+components change.  For example, if the version of erlang is upgraded,
+the Manifest.rb should be updated to point to the specific version of
+erlang that should be collected into the installer.
+
+Above, the "is_" prefix stands for InstallShield.
+
+A merge module in a piece of indirection which has the benefit of
+allowing us to programmatically generate XML input for InstallShield.
+A merge module also allows us share definitions between installers.
+For example, the is_server_mm (merge module) is a shared piece between
+the is_devkit and is_server projects.
+
+The is_* projects also draw from files from the components
+subdirectory.  Each file in the components subdirectory should appear
+mutally exclusively in just a single is_* project.
+
+---------------------------------
+More Info:
+
+There are also extra instructions in the
+buildbot-internal/README.windows for setting up a windows buildslave.
+That file plus this file provide a union of information and setup
+steps.
+
+---------------------------------
+Getting Started:
+
+My developer environment is a mac box (OSX) running Sun VirtualBox VM,
+with a Microsoft Windows Vista guest OS.  I created a shared folder in
+VirtualBox so that I could easily move files back and forth between
+host and guest OS'es.  On the host OS (OSX), for example, I have a
+directory...
+
+  /Users/steveyen/dev/wallace
+
+In VirtualBox, the /Users/steveyen/dev folder is mapped via its
+"Shared Folder" feature to a microsoft network drive.  In VirtualBox,
+you'll have to install its Guest OS Extensions in order to get the
+Shared Folder feature to work.
+
+  //vboxsvr/dev --> Z: drive
+
+So, in vista, I can now access the same wallace directory by going
+to...
+
+  z:\wallace
+
+Next, in the guest Windows OS, you will need to download and
+install...
+
+- InstallShield
+  - version 2010 Professional or better.
+  - A correct version of installShield2010 installer is in grommit.
+
+- InstallShield 2010 .NET and J# setups for Collaboration support
+  - A correct version of installShield2010_dim_prereqs installer is in grommit.
+  - Or...
+  - after launching InstallShield, go to Tools->"Check for Updates"...
+  - after you check for updates, you should see an option titled:
+    "Additional Files and Utilities Available". Note, it might be
+    _very_ well hidden and you might have to click around. If you
+    select this link (I believe you would select the "Learn More"
+    link) it will take you to a web page that has the installation you
+    need. Look for "InstallShield 2010 .NET and J# setups for
+    Collaboration support".
+
+- InstallShield 2010 Service Pack 1 (SP1)
+
+- git
+  - look for version msysGit-fullinstall-1.6.4-preview20090729.exe
+  - there will be a msysgit in grommit (which is at
+    github.com/membase/grommit.git), although to get msysgit from
+    grommit, there's a circularity where you first need git.
+  - if you get the right version, the installer should also
+    give you with a sh/shell where you can run git from
+    a unix-like terminal window (MINGW32 based shell).
+  - eg, you should install in the standard default place,
+    so you'll have a c:\msysgit directory.
+
+- if you are developing, you'll need to install your
+  favorite text editor (eg, emacs or vi)
+
+- ruby
+  - look for version 1.8.6 (avoid 1.9 for now).
+  - if you ruby via a downloaded windows installer, you
+    should automatically have have gem, rake, etc.
+
+- gem update
+- gem install rake
+- gem install cucumber
+- gem install win32console (if you want colors in output)
+- gem install sprockets
+- gem install rspec
+- gem install uuidtools
+- gem install ffi
+
+The last one installs ruby wrappers around git.
+
+- unzip.exe
+  - see: http://gnuwin32.sourceforge.net/packages/unzip.htm
+  - place it in your path, somewhere, for example...
+  - /c/msysgit/msysgit/bin or
+  - /c/mingw2/bin/unzip.exe or
+  - "C:\Program Files\GnuWin32\bin\unzip.exe"
+
+Make sure your PATH is setup right, and that ruby's and git's bin
+directories are listed on your Windows PATH environment variable.
+
+For example, my PATH looks somewhat like...
+
+  C:\Ruby\bin;%SystemRoot%\system32;%SystemRoot%; \
+  %SystemRoot%\System32\Wbem; \
+  C:\"Program Files"\git\bin; \
+  C:\"Program Files"\GnuWin32\bin \
+  /bin
+
+- erlang
+  - At the time of this writing, you will need erl5.7.4,
+    aka otp_win32_R13B03.exe, which is 82306212 bytes.
+  - It should install into C:\Program Files\erl5.7.4
+  - It is available from grommit
+  - You don't need erlang on your PATH.
+
+- python
+  - Python 2.6 and py2exe extension are used now to generate win-executables for membase-cli
+  - install Python 2.6.6 from grommit into C:\Python26
+  - install py2exe 0.6.9 for Python 2.6 under win32 from
+    http://sourceforge.net/projects/py2exe/files/py2exe/0.6.9/py2exe-0.6.9.win32-py2.6.exe/download
+  - confirm that your PATH includes "c:\Python26\;c:\Python26\libs;"
+
+- Resource Hacker
+  Windows resource editor is required for changing bitmaps stored in setup.exe directly (like install prepare dialog).
+  - See http://angusj.com/resourcehacker/ for application description and download.
+  - download reshack.zip from http://delphi.icm.edu.pl/ftp/tools/ResHack.zip
+  - unpack it to c:\ResHack
+  - add PATH variable for ResHacker.exe location.
+
+Next...
+
+- Create a c:\dev directory and cd to it.
+
+- You must use c:\dev so that InstallShield does not complain.
+
+- git clone git@github.com:membase/wallace.git
+
+- You should have a c:\dev\wallace directory
+
+- start an msysgit "shell"
+
+  - c:\msysgit\msysgit\msys.bat
+
+- Make sure erl is on your path.  In your msysgit shell...
+
+  - export PATH=$PATH:/c/Program\ Files/erl5.7.4/bin
+
+- During development or nightly builds...
+
+  - cd /c/dev/wallace
+  - rake latest
+
+- For a final, for-release build...
+
+  - rake
+
+---------------------------------
+To run tests:
+
+- for Vista and Windows 7, first...
+  - disable the UAC security feature
+    - http://www.petri.co.il/disable_uac_in_windows_vista.htm
+  - this allows automated GUI testing frameworks to work,
+    at the cost of less security.
+
+- cucumber
+  - this should run the cucumber tests in the features subdirectory.
+
+---------------------------------
+Other tools of note:
+
+- winspector or wincheat
+  - these allow inspection of the windows hierarchy.
+- tasklist
+  - sort of like ps
+
+---------------------------------
+Dependency notes:
+
+server setup.exe
+  [install shield IsCmdBld.exe]
+    is_server/server.ism
+      is_server_mm/server_mm.ism
+        components/server.dim (generated)
+          [Rakefile & ERB]
+            components/server.dim.erb
+            components/Server/* directory tree
+
+devkit setup.exe
+  [install shield IsCmdBld.exe]
+    is_devkit/devkit.ism
+      is_server_mm/server_mm.ism (see above)
+      is_devkit_mm/devkit_mm.ism
+        components/devkit.dim (generated)
+          [Rakefile & ERB]
+            components/devkit.dim.erb
+            components/Devkit/* directory tree
+
+Note that the devkit and server both depend on the same server_mm
+(server merge module).
+
+---------------------------------
+To update server.ism to match the devkit.ism...
+
+Open the is_devkit/devkit.ism up in the InstallShield development GUI
+tool.  Then, do a Save As, choosing a new project name ("server.ism"),
+in the wallace/. directory.  Check the option to create a new
+subdirectory ("Create 'Project Name' subfolder...", so at the end of
+these steps you will have a wallace/server subdirectory (which we'll
+soon rename)).  Also, choose to save with new GUID's ("Create and
+assign a new project GUID..."), and also choose not to rename the
+project names automatically ("Update the project settings
+appropriately...").
+
+Then, in the new server/server.ism project, remove the dependency on
+the devkit_mm (merge module) redistributable.  This is found under the
+"Application Data" -> "Redistributables" tree area.  However, do keep
+the dependency the server_mm redistributable.
+
+Then use the "Installation Information" -> "General Information" pane
+to change strings from Membase Developer Kit (DevKit) to Membase
+Server (Server).  These include...
+
+  Product Name (to "Membase Server")
+  INSTALLDIR (to "[ProgramFilesFolder]Membase\Server")
+  Title (to "Membase Server")
+  Subject (to "Membase Server")
+
+Then save, and close the InstallShield development GUI tool.
+
+Then rename the wallace/server directory to wallace/is_server.
+
+At this point, the updated server.ism (in is_server/server.ism) is
+correctly updated to match all the goodness that was previously only
+in the is_devkit/devkit.ism.
+
+Next, copy the "is_devkit/Script Files/Setup.Rul" to
+"is_server/Script Files/Setup.Rul" (there might not actually
+be any changes, if InstallShield's "File -> Save As" actually worked).
+
+Also, open up the is_server/server.ism with your favorite text editor
+and update the EULA_devkit string to EULA_server string.
+
+Look for any remaining strings that need changing and change them...
+
+  git grep DevKit -- is_server
+  git grep DEVKIT -- is_server
+
+You should be able to do a "git diff" to see the changes.
+
+Re-build (with "rake latest"), re-test, and check it in.
+
+---------------------------------
+py2exe
+
+See: py2exe.org
+
+Version: py2exe-0.6.9 for python 2.6
+
+http://sourceforge.net/projects/py2exe/files/py2exe/0.6.9/py2exe-0.6.9.win32-py2.6.exe/download
+
+---------------------------------
+Why wallace?
+
+Wallace & Grommit?  Actually, I just went to wikipedia when I started
+this project and looked for a short, spellable name that started with
+the "w" character.  "w" is for Windows.
+

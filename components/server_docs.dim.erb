@@ -1,0 +1,58 @@
+<DIM uuid="19d5142d52a8bf51d5fc72317fa4b133"
+      schemaVersion="1.0.0"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns="http://www.acresso.com/collaboration/dim">
+  <DIMInfo>
+    <name>server-dim</name>
+    <% version = PRODUCT_GIT_DESCRIBE.split('.') %>
+    <version major="<%= version[0] %>" minor="<%= version[1] %>" build="<%= version[2] %>"
+             revision="<%= PRODUCT_VERSION %>" />
+    <author>Couchbase</author>
+    <company>Couchbase, Inc.</company>
+    <description></description>
+    <comments></comments>
+    <metaInfo>
+      <metaTag>
+        <name>ReadMe</name>
+        <value />
+        <description>Membase Server DIM - generated</description>
+      </metaTag>
+    </metaInfo>
+  </DIMInfo>
+  <platforms>
+    <platform ID="_aa2b47c793bd726bf034eac89ad53c1d"
+    	      os="windows" osMajorVersion="" osMinorVersion="" osBuildNumber="" osServicePack=""
+	      displayName="Windows (all versions, all archs)" />
+  </platforms>
+  <configurableEntities>
+    <fileSystem>
+      <fileSet uuid="1fe27a1b0617d73a7a2b7b729c349390"
+      	       configurationSetName="WindowsDependent"
+	       targetLocation="$[INSTALLDIR]">
+        <supportedPlatforms>
+          <platform ref="_aa2b47c793bd726bf034eac89ad53c1d" />
+        </supportedPlatforms>
+      </fileSet>
+      <% trees['server'].each do |dir, files|
+         if dir.match(/\/docs/)
+           src_dir = dir.gsub(/^.\/components\/?/i, '')
+           dst_dir = dir.gsub(/^.\/components\/server\/?/i, '')
+           %>
+           <fileSet uuid="<%= uuid(src_dir) %>"
+               configurationSetName="PlatformIndependent"
+               targetLocation="$[INSTALLDIR]/<%= dst_dir %>">
+             <% files.each do |path|
+                  src = path.gsub(/^.\/components\//i, '')
+                  dst = path.gsub(/^.\/components\/server\//i, '')
+                  %>
+                  <file uuid="<%= uuid(path, path) %>">
+                    <sourcePath><%= src %></sourcePath>
+                    <fileAttributes useExistingAttributes="true" />
+                  </file>
+             <% end %>
+           </fileSet>
+         <% end %>
+      <% end %>
+    </fileSystem>
+  </configurableEntities>
+</DIM>
