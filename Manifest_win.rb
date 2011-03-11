@@ -93,7 +93,7 @@ COLLECT_PLATFORM_WIN =
                                                          " --with-win32-icu-binaries=#{STARTDIR}/#{BASE}/icu4c-4_2_1-Win32-msvc9/icu" +
                                                          " --with-erlang=#{builder_erlang_base()}/#{builder_erlang_dir()}/usr/include" +
                                                          " --with-win32-curl=#{STARTDIR}/#{BASE}/curl-7.20.1" +
-                                                         " --with-msvc-redist-dir=#{builder_erlang_base()}/#{builder_erlang_dir()}/vcredist_x86.exe" +
+                                                         " --with-msvc-redist-dir=#{STARTDIR}/#{BASE}/vcredist_x86.exe" +
                                                          " --with-msbuild-dir=#{DOTNET_FRAMEWORK_4}"],
                               :make => ["make -e LOCAL=#{base_tmp_install()}",
                                         "make install",
