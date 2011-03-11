@@ -23,7 +23,7 @@ PRODUCT_NAMES = ['Server']
 # This Manifest.rb assumes that the grommit and grommix subdirectories
 # are siblings of the wallace subdirectory.
 #
-BASE = "../grommit"
+BASE = "../grommit_couchdb"
 BASEX = "../grommix"
 
 if (not File.exists?("#{BASEX}"))
