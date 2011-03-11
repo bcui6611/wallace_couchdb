@@ -56,7 +56,6 @@ COLLECT_PLATFORM_WIN =
       :force => true,
       :dst_dir => "components/Server",
       :except => [/.*\/doc/,
-                  /.*\/usr/,
                   /.*\/src/,
                   /.*\/examples/,
                   /.*\/include/,
@@ -94,7 +93,9 @@ COLLECT_PLATFORM_WIN =
                                                          " --with-erlang=#{builder_erlang_base()}/#{builder_erlang_dir()}/usr/include" +
                                                          " --with-win32-curl=#{STARTDIR}/#{BASE}/curl-7.20.1" +
                                                          " --with-msvc-redist-dir=#{STARTDIR}/#{BASE}/vcredist_x86.exe" +
-                                                         " --with-msbuild-dir=#{DOTNET_FRAMEWORK_4}"],
+                                                         " --with-msbuild-dir=#{DOTNET_FRAMEWORK_4}",
+                                           "sed -e \"s| INSTALL.gz| |\" <Makefile >Makefile.out",
+                                           "cp Makefile.out Makefile"],
                               :make => ["make -e LOCAL=#{base_tmp_install()}",
                                         "make install",
                                         "make --file=#{STARTDIR}/components/Makefile.couchdb_extra SRC_DIR=#{STARTDIR}/components/Server bdist"]

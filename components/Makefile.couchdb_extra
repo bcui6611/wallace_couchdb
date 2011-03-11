@@ -9,11 +9,17 @@ TMP_VER=$(TMP_DIR)/version_num.tmp
 version:
 	test -d $(TMP_DIR) || mkdir $(TMP_DIR)
 	git describe | sed s/-/_/g > $(TMP_VER)
-
 bdist: version
 	rm -f ./couchdb_*.tar.gz
 	rm -rf $(TMP_DIR)/couchdb
 	mkdir -p $(TMP_DIR)/couchdb
-	cp -R $(SRC_DIR)/*.* $(TMP_DIR)/couchdb
+	cp -r $(SRC_DIR)/*.* $(TMP_DIR)/couchdb
+	cp -r $(SRC_DIR)/share $(TMP_DIR)/couchdb
+	cp -r $(SRC_DIR)/var $(TMP_DIR)/couchdb
+	cp -r $(SRC_DIR)/lib $(TMP_DIR)/couchdb
+	cp -r $(SRC_DIR)/bin $(TMP_DIR)/couchdb
+	cp -r $(SRC_DIR)/etc $(TMP_DIR)/couchdb
+	cp -r $(SRC_DIR)/releases $(TMP_DIR)/couchdb
+	cp -r $(SRC_DIR)/usr $(TMP_DIR)/couchdb
 	(cd $(TMP_DIR); tar cf - couchdb) | gzip -9 > couchdb_`cat $(TMP_VER)`-`uname -s`.`uname -m`.tar.gz
 	echo created couchdb_`cat $(TMP_VER)`-`uname -s`.`uname -m`.tar.gz

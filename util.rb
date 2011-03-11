@@ -335,8 +335,8 @@ def fix_ism(path)
     #
     v_parts = PRODUCT_VERSION.split('-')[0].split('.')
 
-    ver_ism = "#{v_parts[0]}.#{v_parts[1]}.#{v_parts[2]}"
-    if ver_ism.match(/^[0-9]+\.[0-9]+\.[0-9a-z]+$/)
+    ver_ism = "#{v_parts[0]}.#{v_parts[1]}"
+    if ver_ism.match(/^[0-9]+\.[0-9]+[a-z]+$/)
       print "INFO: fixing ism ProductVersion to #{ver_ism}\n"
       content_after = content_after.gsub(/<td>ProductVersion<\/td><td>(.*?)<\/td>/,
                                          "<td>ProductVersion</td><td>#{ver_ism}</td>")
