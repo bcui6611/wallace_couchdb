@@ -103,6 +103,12 @@ COLLECT_PLATFORM_WIN =
                             }),
       :dst_dir => "components/Server",
       :after   => mv_dir_proc()
+    },
+    { :desc => "openssl",
+      :seq  => 110,
+      :step => Proc.new {|what|
+        FileUtils.cp("#{STARTDIR}/#{BASE}/openssl/libeay32.dll", "components/Server/bin/")
+      }
     }
   ]
 
