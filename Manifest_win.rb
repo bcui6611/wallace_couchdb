@@ -110,6 +110,12 @@ COLLECT_PLATFORM_WIN =
         FileUtils.cp("#{STARTDIR}/#{BASE}/openssl/libeay32.dll", "components/Server/bin/")
         FileUtils.cp("#{STARTDIR}/#{BASE}/openssl/libeay32.license.txt", "components/Server/bin/")
       }
+    },
+    { :desc => "cleanup",
+      :seq  => 900,
+      :step => Proc.new {|what|
+        FileUtils.rm_rf("components/Server/PR.template")
+      }
     }
   ]
 
