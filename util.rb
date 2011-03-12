@@ -333,10 +333,11 @@ def fix_ism(path)
     # PRODUCT_VERSION looks like 0.0.0-0-g12344321-win32
     # or, like 1.0.2rc1-win32
     #
-    v_parts = PRODUCT_VERSION.split('-')[0].split('.')
-
-    ver_ism = "#{v_parts[0]}.#{v_parts[1]}"
-    if ver_ism.match(/^[0-9]+\.[0-9]+[a-z]+$/)
+	prefix = PRODUCT_VERSION.split('-')[0]
+    v_parts = prefix.split('.')
+    v_parts = "1.1.0a".split('.') if prefix == '1.1a'
+    ver_ism = "#{v_parts[0]}.#{v_parts[1]}.#{v_parts[2]}"
+    if ver_ism.match(/^[0-9]+\.[0-9]+\.[0-9a-z]+$/)
       print "INFO: fixing ism ProductVersion to #{ver_ism}\n"
       content_after = content_after.gsub(/<td>ProductVersion<\/td><td>(.*?)<\/td>/,
                                          "<td>ProductVersion</td><td>#{ver_ism}</td>")
