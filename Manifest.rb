@@ -155,6 +155,13 @@ COLLECT_INDEPENDENT =
       :src_dir => "./components/platform_#{os_general()}/bin",
       :dst_dir => "./components/Server/bin",
       :force => true
+    },
+    { :desc => "platform/var",
+      :dist => false,
+      :seq => 21,
+      :src_dir => "./components/platform_#{os_general()}/var",
+      :dst_dir => "./components/Server/var",
+      :force => true
     }
   ]
 
