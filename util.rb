@@ -348,9 +348,9 @@ def fix_ism(path)
 
     cpath = File.expand_path('./components')
     cpath = cpath.gsub(/\//, "\\")
-    if cpath.downcase != "C:\\devtest\\wallace\\components".downcase
+    if cpath.downcase != "C:\\devtest\\wallace_couchdb\\components".downcase
       print "INFO: fixing ism paths to #{cpath}\n"
-      src = "<td>PATH_TO_COMPONENTS_FILES<\/td><td>C:\\devtest\\wallace\\components<\/td>"
+      src = "<td>PATH_TO_COMPONENTS_FILES<\/td><td>C:\\devtest\\wallace_couchdb\\components<\/td>"
       dst = "<td>PATH_TO_COMPONENTS_FILES<\/td><td>#{cpath}<\/td>"
       print "INFO: final line: #{dst}\n"
 
