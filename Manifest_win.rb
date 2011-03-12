@@ -112,9 +112,13 @@ COLLECT_PLATFORM_WIN =
                               :no_parse_tag => true,
                               :branch => "origin/master",
                               :make => ["make -e COUCH_SRC=#{STARTDIR}/../couchdb/src/couchdb",
-                                        "mkdir -p #{STARTDIR}/components/Server/lib/geocouch/ebin",
+                                        "mkdir #{STARTDIR}/components/Server/lib",
+                                        "mkdir #{STARTDIR}/components/Server/lib/geocouch",
+                                        "mkdir #{STARTDIR}/components/Server/lib/geocouch/ebin",
                                         "cp -r build/* #{STARTDIR}/components/Server/lib/geocouch/ebin",
-                                        "mkdir -p #{STARTDIR}/components/Server/etc/couchdb/local.d",
+                                        "mkdir #{STARTDIR}/components/Server/etc",
+                                        "mkdir #{STARTDIR}/components/Server/etc/couchdb",
+                                        "mkdir #{STARTDIR}/components/Server/etc/couchdb/local.d",
                                         "cp -r etc/couchdb/local.d/* #{STARTDIR}/components/Server/etc/couchdb/local.d"]
                             })
     },
