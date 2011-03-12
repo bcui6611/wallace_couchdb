@@ -299,52 +299,6 @@ function OnFirstUIAfter()
 begin
     szPort = DEFAULT_PORT;
 
-Dlg_PortTaken:
-    StrTrim(szPort);
-    StrToNum(nvPort, szPort);
-    if (nvPort <= 0 || StrLength(szPort) <= 0 || PortTaken(szPort)) then
-      if (nvPort <= 0 || StrLength(szPort) <= 0) then
-        szPortMsg = "Invalid port number. " +
-                    "Please enter an unused port number.\n";
-      else
-        szPortMsg = "Port number " + szPort + " is already in use " +
-                    "by another program.\n\n" +
-                    "Please enter a different port number for " +
-                    "the Couchbase Server to use.";
-      endif;
-
-      SetDialogTitle(DLG_ASK_TEXT, "Enter a port number");
-
-      nResult = AskText(szPortMsg, "", szPort);
-      if nResult = NEXT then
-        goto Dlg_PortTaken;
-      else
-        MessageBox("Using the default port number of " + DEFAULT_PORT +
-                   ".\n\n" +
-                   "Please ensure that port number " + DEFAULT_PORT +
-                   " is available.  You can do this by shutting down" +
-                   " or reconfiguring any other programs that" +
-                   " are using port number " + DEFAULT_PORT + ".",
-                   WARNING);
-        szPort = DEFAULT_PORT;
-        goto Dlg_Finish;
-      endif;
-    else
-      StrTrim(szPort);
-      if (szPort != DEFAULT_PORT) then
-        FileInsertLine(INSTALLDIR ^ "priv" ^ "config",
-                       "{rest, [{'_ver', {0, 0, 0}}, " +
-                               "{port, " + szPort + "}]}.",
-                       0, BEFORE);
-
-        // Update the membase_console.url with the new port.
-        //
-        FileInsertLine(INSTALLDIR ^ "couchbase_console.url",
-                       "URL=http://localhost:" + szPort + "/_utils",
-                       1, REPLACE);
-      endif;
-    endif;
-
 Dlg_Finish:
     CreateErlangInis(ERLANG_VER);
     RegisterErlService(ERLANG_VER);
