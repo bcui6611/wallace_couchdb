@@ -43,11 +43,11 @@ function BOOL PortTaken(szPort)
   NUMBER nvReturnLineNum;
   NUMBER nvReturnCode;
 begin
-  szOutFile = INSTALLDIR ^ "server" ^ "bin" ^ "test_port.out";
+  szOutFile = INSTALLDIR ^ "bin" ^ "test_port.out";
 
   DeleteFile(szOutFile);
 
-  LaunchAppAndWait(INSTALLDIR ^ "server" ^ "bin" ^ "test_port.bat",
+  LaunchAppAndWait(INSTALLDIR ^ "bin" ^ "test_port.bat",
                    szPort + " \"" + szOutFile + "\"",
                    LAAW_OPTION_WAIT | LAAW_OPTION_HIDDEN);
 
@@ -332,14 +332,14 @@ Dlg_PortTaken:
     else
       StrTrim(szPort);
       if (szPort != DEFAULT_PORT) then
-        FileInsertLine(INSTALLDIR ^ "server" ^ "priv" ^ "config",
+        FileInsertLine(INSTALLDIR ^ "priv" ^ "config",
                        "{rest, [{'_ver', {0, 0, 0}}, " +
                                "{port, " + szPort + "}]}.",
                        0, BEFORE);
 
         // Update the membase_console.url with the new port.
         //
-        FileInsertLine(INSTALLDIR ^ "server" ^ "couchbase_console.url",
+        FileInsertLine(INSTALLDIR ^ "couchbase_console.url",
                        "URL=http://localhost:" + szPort + "/_utils",
                        1, REPLACE);
       endif;
