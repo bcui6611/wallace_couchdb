@@ -20,7 +20,7 @@
 prototype VOID LaunchBrowser(STRING);
 prototype VOID CreateErlangInis(STRING);
 prototype VOID CreateErlangIni(STRING, STRING);
-prototype BOOL PortTaken(STRING); 
+prototype BOOL PortTaken(STRING);
 prototype VOID RunErlsrv(STRING, STRING);
 prototype VOID RegisterErlService(STRING);
 prototype VOID UnregisterErlService(STRING);
@@ -133,7 +133,7 @@ end;
 function VOID UnregisterErlService(szVer)
 begin
     RunErlsrv(szVer, "remove " + SERVICE_NAME);
-    
+
     LaunchAppAndWait(INSTALLDIR ^ "server" ^
                      "erts-" + szVer ^
                      "bin" ^ "epmd.exe",
@@ -208,7 +208,7 @@ begin
     g_szTempDir = "backup-" + szDate + "-" + szTime;
 end;
 
-//---------------------------------------------------------------------------                                                                        
+//---------------------------------------------------------------------------
 // OnFirstUIBefore
 //
 // First Install UI Sequence - Before Move Data
@@ -236,7 +236,7 @@ begin
         MessageBox( szMsg, SEVERE );
         abort;
     endif;
-   
+
     nSetupType = COMPLETE;
     szDir = TARGETDIR;
     szName = "";
@@ -343,7 +343,7 @@ Dlg_PortTaken:
                        1, REPLACE);
       endif;
     endif;
-    
+
 Dlg_Finish:
     CreateErlangInis(ERLANG_VER);
     RegisterErlService(ERLANG_VER);
@@ -351,23 +351,23 @@ Dlg_Finish:
     Disable(STATUSEX);
 
     szTitle = "";
-    szMsg1 = ""; 
+    szMsg1 = "";
     szMsg2 = "";
     szOpt1 = "";
     szOpt2 = "";
     bvOpt1   = FALSE;
-    bvOpt2   = FALSE;    
-    
-    //{{IS_SCRIPT_TAG(Dlg_SdDinishEx)	
+    bvOpt2   = FALSE;
+
+    //{{IS_SCRIPT_TAG(Dlg_SdDinishEx)
     if ( BATCH_INSTALL ) then
         SdFinishReboot ( szTitle , szMsg1 , SYS_BOOTMACHINE , szMsg2 , 0 );
     else
         SdFinish ( szTitle , szMsg1 , szMsg2 , szOpt1 , szOpt2 , bvOpt1 , bvOpt2 );
     endif;
     //}}IS_SCRIPT_TAG(Dlg_SdDinishEx)
-    
+
     szSite = "http://localhost:" + szPort + "/_utils/";
-    LaunchBrowser(szSite);    
+    LaunchBrowser(szSite);
 end;
 
 //---------------------------------------------------------------------------
@@ -395,7 +395,7 @@ begin
     szCaption = SdLoadString(IFX_ONMAINTUI_CAPTION);
     Sprintf (svResult, svResult, @PRODUCT_NAME);
     if (IDCANCEL = SprintfBox(MB_OKCANCEL, szCaption, svResult)) then
-        abort; 
+        abort;
     endif;
 
     // Added in IS 2009 - Set appropriate StatusEx static text.
@@ -412,7 +412,7 @@ begin
     // Show final dialog.
     if ( BATCH_INSTALL ) then
         SdFinishReboot( SdLoadString(IFX_SDFINISH_REMOVE_TITLE), SdLoadString(IFX_SDFINISH_REMOVE_MSG2), SYS_BOOTMACHINE, "", 0 );
-    else    
+    else
         SdFinish( SdLoadString(IFX_SDFINISH_REMOVE_TITLE), SdLoadString(IFX_SDFINISH_REMOVE_MSG1), "", "" , "", bOpt1 , bOpt2 );
     endif;
 
@@ -462,7 +462,7 @@ Dlg_Start:
     if ( nType = REMOVEALL ) then
         nResult = MessageBox( SdLoadString( IFX_MAINTUI_MSG ), MB_YESNO );
         if (nResult != IDYES ) then
-            
+
             if( REMOVEONLY ) then
                 // In REMOVEONLY mode, abort the setup.
                 abort;
@@ -477,14 +477,14 @@ Dlg_Start:
     nResult = NEXT;
 Dlg_SdFeatureTree:
     if (nType = MODIFY) then
-        szTitle = ""; 
+        szTitle = "";
         szMsg = "";
         nResult = SdFeatureTree(szTitle, szMsg, INSTALLDIR, "", 2);
         if (nResult = BACK) goto Dlg_Start;
     endif;
 
     switch(nType)
-        case REMOVEALL: 
+        case REMOVEALL:
             CustomRemoveAll();
 
             // Added in IS 2009 - Set appropriate StatusEx static text.
@@ -498,6 +498,6 @@ Dlg_SdFeatureTree:
             // Added in IS 2009 - Set appropriate StatusEx static text.
             SetStatusExStaticText( SdLoadString( IDS_IFX_STATUSEX_STATICTEXT_MAINTUI_MODIFY ) );
     endswitch;
-    
+
     Enable(STATUSEX);
 end;
