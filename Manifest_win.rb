@@ -106,21 +106,22 @@ COLLECT_PLATFORM_WIN =
       :after   => mv_dir_proc()
     },
     { :desc => "geocouch",
-      :seq => 110,
-      :src_tgz => pull_make("#{BASEX}", "geocouch", VERSION_GEOCOUCH, "tar.gz",
-                            { :os_arch => false,
-                              :no_parse_tag => true,
-                              :branch => "origin/master",
-                              :make => ["make -e COUCH_SRC=#{STARTDIR}/../couchdb/src/couchdb",
-                                        "mkdir #{STARTDIR}/components/Server/lib",
-                                        "mkdir #{STARTDIR}/components/Server/lib/geocouch",
-                                        "mkdir #{STARTDIR}/components/Server/lib/geocouch/ebin",
-                                        "cp -r build/* #{STARTDIR}/components/Server/lib/geocouch/ebin",
-                                        "mkdir #{STARTDIR}/components/Server/etc",
-                                        "mkdir #{STARTDIR}/components/Server/etc/couchdb",
-                                        "mkdir #{STARTDIR}/components/Server/etc/couchdb/local.d",
-                                        "cp -r etc/couchdb/local.d/* #{STARTDIR}/components/Server/etc/couchdb/local.d"]
-                            })
+      :seq  => 110,
+      :step => Proc.new {|what|
+        pull_make("#{BASEX}", "geocouch", VERSION_GEOCOUCH, "tar.gz",
+                  { :os_arch => false,
+                    :skip_file => true,
+                    :no_parse_tag => true,
+                    :branch => "origin/master",
+                    :make => ["make -e COUCH_SRC=#{STARTDIR}/../couchdb/src/couchdb"]
+                  }).call(what)
+        FileUtils.mkdir_p("#{STARTDIR}/components/Server/lib/geocouch/ebin")
+        FileUtils.cp_r(Dir.glob("#{STARTDIR}/../geocouch/build/*"),
+                       "#{STARTDIR}/components/Server/lib/geocouch/ebin")
+        FileUtils.mkdir_p("#{STARTDIR}/components/Server/etc/couchdb/local.d")
+        FileUtils.cp_r(Dir.glob("#{STARTDIR}/../geocouch/etc/couchdb/local.d/*"),
+                       "#{STARTDIR}/components/Server/etc/couchdb/local.d")
+      }
     },
     { :desc => "openssl",
       :seq  => 200,
