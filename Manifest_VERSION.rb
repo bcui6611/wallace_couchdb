@@ -15,4 +15,6 @@ VERSION_VBUCKETMIGRATOR          = "1.6.5"
 VERSION_MOXI                     = "1.6.5"
 VERSION_LIBCONFLATE              = "1.6.5"
 VERSION_GROMMIT                  = "1.6.5"
-VERSION_COUCHDB                  = "1.0.2"
+
+VERSION_COUCHDB  = "couchbase_1.1b"
+VERSION_GEOCOUCH = "couchbase_1.1b_geo"

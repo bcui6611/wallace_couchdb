@@ -736,7 +736,8 @@ def pull_make(base, name, tag_ver, kind, extra = {})
           base_want = "#{base}/#{w}"
         else
           print "INFO: using #{tag_ver} version of #{repo}\n"
-          checkout_arg = parse_tag_ver(tag_ver)
+          checkout_arg = tag_ver
+          checkout_arg = parse_tag_ver(tag_ver) unless extra[:no_parse_tag]
           hard_sh("git checkout #{checkout_arg}")
         end
 

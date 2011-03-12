@@ -84,6 +84,7 @@ COLLECT_PLATFORM_WIN =
       :seq => 100,
       :src_tgz => pull_make("#{BASEX}", "couchdb", VERSION_COUCHDB, "tar.gz",
                             { :os_arch => false,
+                              :no_parse_tag => true,
                               :branch => "origin/refresh",
                               :premake => autorun_cmd("couchdb") +
                                           ["sh ./configure --prefix=#{STARTDIR}/components/Server" +
@@ -104,8 +105,22 @@ COLLECT_PLATFORM_WIN =
       :dst_dir => "components/Server",
       :after   => mv_dir_proc()
     },
+    { :desc => "geocouch",
+      :seq => 110,
+      :src_tgz => pull_make("#{BASEX}", "geocouch", VERSION_GEOCOUCH, "tar.gz",
+                            { :os_arch => false,
+                              :no_parse_tag => true,
+                              :branch => "origin/master",
+                              :make => ["make -e COUCH_SRC=#{STARTDIR}/../couchdb/src/couchdb" +
+                                            " SRC_DIR=#{STARTDIR}/components/Server ERLANG_VER=#{ERLANG_VER} bdist",
+                                        "mkdir -p #{STARTDIR}/components/Server/lib/couchdb/plugins/geocouch.git/ebin",
+                                        "cp -r build/* #{STARTDIR}/components/Server/lib/couchdb/plugins/geocouch.git/ebin",
+                                        "mkdir -p #{STARTDIR}/components/Server/etc/couchdb/local.d",
+                                        "cp -r etc/couchdb/local.d/* #{STARTDIR}/components/Server/etc/couchdb/local.d"]
+                            })
+    },
     { :desc => "openssl",
-      :seq  => 110,
+      :seq  => 200,
       :step => Proc.new {|what|
         FileUtils.cp("#{STARTDIR}/#{BASE}/openssl/libeay32.dll", "components/Server/bin/")
         FileUtils.cp("#{STARTDIR}/#{BASE}/openssl/libeay32.license.txt", "components/Server/bin/")
