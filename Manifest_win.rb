@@ -98,7 +98,8 @@ COLLECT_PLATFORM_WIN =
                                            "cp Makefile.out Makefile"],
                               :make => ["make -e LOCAL=#{base_tmp_install()}",
                                         "make install",
-                                        "make --file=#{STARTDIR}/components/Makefile.couchdb_extra SRC_DIR=#{STARTDIR}/components/Server bdist"]
+                                        "make --file=#{STARTDIR}/components/Makefile.couchdb_extra" +
+                                                     " SRC_DIR=#{STARTDIR}/components/Server ERLANG_VER=#{ERLANG_VER} bdist"]
                             }),
       :dst_dir => "components/Server",
       :after   => mv_dir_proc()

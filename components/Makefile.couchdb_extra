@@ -2,6 +2,7 @@
 # into the upstream community Makefile, we have our own Makefile
 # "addendum" here in wallace.
 
+ERLANG_VER=5.7.4
 SRC_DIR=.
 TMP_DIR=$(shell pwd)/tmp
 TMP_VER=$(TMP_DIR)/version_num.tmp
@@ -13,6 +14,8 @@ bdist: version
 	rm -f ./couchdb_*.tar.gz
 	rm -rf $(TMP_DIR)/couchdb
 	mkdir -p $(TMP_DIR)/couchdb
+	sed -e "s|erts-5\.8|erts-$(ERLANG_VER)|" < $(SRC_DIR)/bin/couchdb.bat > $(TMP_DIR)/couchdb.bat.out
+	cp $(TMP_DIR)/couchdb.bat.out $(SRC_DIR)/bin/couchdb.bat
 	cp -r $(SRC_DIR)/*.* $(TMP_DIR)/couchdb
 	cp -r $(SRC_DIR)/share $(TMP_DIR)/couchdb
 	cp -r $(SRC_DIR)/var $(TMP_DIR)/couchdb
