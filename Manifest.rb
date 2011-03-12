@@ -58,7 +58,7 @@ end
 REPO_COMPONENTS_TAG = [
 # [ repo name,                 repo branch]
   ['grommit',                  'master'],
-  ['couchdb',                  'master']
+  ['couchdb',                  'refresh']
 ]
 
 REPO_COMPONENTS = REPO_COMPONENTS_TAG.clone().concat([
