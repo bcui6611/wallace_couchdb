@@ -18,6 +18,8 @@
 #define ERLANG_VER   "5.7.4"
 
 prototype VOID LaunchBrowser(STRING);
+prototype VOID CreateErlangInis(STRING);
+prototype VOID CreateErlangIni(STRING, STRING);
 prototype BOOL PortTaken(STRING); 
 prototype VOID RunErlsrv(STRING, STRING);
 prototype VOID RegisterErlService(STRING);
@@ -57,6 +59,62 @@ begin
   DeleteFile(szOutFile);
 
   return (nvReturnCode = 0);
+end;
+
+function VOID CreateErlangInis(szVer)
+begin
+    // Note that we are overwriting (or changing) existing files that
+    // InstallShield just wrote down.  So, uninstallation will
+    // be automatically taken care of by InstallShield.
+
+    CreateErlangIni("bin",
+                    "erts-" + szVer ^ "bin");
+    CreateErlangIni("erts-" + szVer ^ "bin",
+                    "erts-" + szVer ^ "bin");
+end;
+
+function VOID CreateErlangIni(szIniDir, szBinDir)
+    STRING szRootPath, szBinPath, szIniPath, szIniName;
+    STRING szTitle, szTxt;
+    NUMBER nvFileHandle;
+begin
+    szRootPath = INSTALLDIR;
+    szIniPath  = szRootPath ^ szIniDir;
+    if (ExistsDir(szIniPath) == NOTEXISTS) then
+        if (CreateDir(szIniPath) < 0) then
+            MessageBox ( szIniPath + " folder creation failed.", SEVERE);
+            abort;
+        endif;
+    endif;
+
+    szBinPath  = szRootPath ^ szBinDir;
+    szIniName  = "erl.ini";
+
+    OpenFileMode (FILE_MODE_APPEND);
+
+    if (CreateFile (nvFileHandle, szIniPath, szIniName) < 0) then
+        MessageBox ("erl.ini file creation failed.", SEVERE);
+        abort;
+    else
+        StrRemoveLastSlash(szBinPath);
+        StrRemoveLastSlash(szRootPath);
+
+        StrReplace(szBinPath, "\\", "\\\\", 0);
+        StrReplace(szRootPath, "\\", "\\\\", 0);
+
+        szTxt =
+          "[erlang]\r\n" +
+          "Bindir=" + szBinPath + "\r\n" +
+          "Progname=erl\r\n" +
+          "Rootdir=" + szRootPath + "\r\n";
+
+        if (WriteLine(nvFileHandle, szTxt) < 0) then
+            MessageBox ("WriteLine failed.", SEVERE);
+            abort;
+        endif;
+    endif;
+
+    CloseFile (nvFileHandle);
 end;
 
 function VOID RegisterErlService(szVer)
@@ -287,6 +345,7 @@ Dlg_PortTaken:
     endif;
     
 Dlg_Finish:
+    CreateErlangInis(ERLANG_VER);
     RegisterErlService(ERLANG_VER);
 
     Disable(STATUSEX);
