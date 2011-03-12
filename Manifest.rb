@@ -141,13 +141,20 @@ load("./Manifest_#{os_short}.rb")
 # ------------------------------------------------
 
 COLLECT_INDEPENDENT =
-  [ 
+  [
     { :desc => "licenses",
       :dist => false,
       :seq => 50,
       :src_file => "#{BASE}/#{licenses_file()}",
       :dst_dir => "./components/Server",
       :dst_base => "licenses.tgz"
+    },
+    { :desc => "platform/bin",
+      :dist => false,
+      :seq => 20,
+      :src_dir => "./components/platform_#{os_general()}/bin",
+      :dst_dir => "./components/Server/bin",
+      :force => true
     }
   ]
 
