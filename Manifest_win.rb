@@ -108,6 +108,7 @@ COLLECT_PLATFORM_WIN =
       :seq  => 110,
       :step => Proc.new {|what|
         FileUtils.cp("#{STARTDIR}/#{BASE}/openssl/libeay32.dll", "components/Server/bin/")
+        FileUtils.cp("#{STARTDIR}/#{BASE}/openssl/libeay32.license.txt", "components/Server/bin/")
       }
     }
   ]
