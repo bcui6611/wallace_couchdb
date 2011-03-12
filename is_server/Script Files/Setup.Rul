@@ -122,7 +122,7 @@ function VOID RegisterErlService(szVer)
 begin
     RunErlsrv(szVer, "remove " + SERVICE_NAME);
 
-    szProg = INSTALLDIR ^ "server" ^ "bin" ^ "couchdb.bat";
+    szProg = INSTALLDIR ^ "bin" ^ "service_register.bat";
 
     LaunchAppAndWait(szProg, "",
                      WAIT | LAAW_OPTION_HIDDEN | LAAW_OPTION_SHOW_HOURGLASS);
@@ -134,7 +134,7 @@ function VOID UnregisterErlService(szVer)
 begin
     RunErlsrv(szVer, "remove " + SERVICE_NAME);
 
-    LaunchAppAndWait(INSTALLDIR ^ "server" ^
+    LaunchAppAndWait(INSTALLDIR ^
                      "erts-" + szVer ^
                      "bin" ^ "epmd.exe",
                      "-kill",
@@ -144,7 +144,7 @@ end;
 function VOID RunErlsrv(szVer, szCmd)
     STRING szProg;
 begin
-    szProg = INSTALLDIR ^ "server" ^
+    szProg = INSTALLDIR ^
              "erts-" + szVer ^ "bin" ^ "erlsrv.exe";
 
     LaunchAppAndWait(szProg, szCmd,
@@ -161,18 +161,19 @@ function VOID CustomRemoveAll()
     STRING szSrcDir, szTgtDir;
     NUMBER nResult;
 begin
-
     UnregisterAll();
+
     ComponentRemoveAll();
     //ComponentTransferData(MEDIA);
 
-    szSrcDir = INSTALLDIR ^ "server" ^ "var";
-    szTgtDir = INSTALLDIR ^ "server" ^ g_szTempDir;
+    szSrcDir = INSTALLDIR ^ "var";
+    szTgtDir = INSTALLDIR ^ g_szTempDir;
+
     // Back up data directory
     RenameFile(szSrcDir, szTgtDir);
 
-    DeleteDir(INSTALLDIR ^ "server" ^ "share", ALLCONTENTS);
-    DeleteDir(INSTALLDIR ^ "server" ^ "bin", ALLCONTENTS);
+    DeleteDir(INSTALLDIR ^ "share", ALLCONTENTS);
+    DeleteDir(INSTALLDIR ^ "bin", ALLCONTENTS);
 end;
 
 //---------------------------------------------------------------------------
@@ -309,7 +310,7 @@ Dlg_PortTaken:
         szPortMsg = "Port number " + szPort + " is already in use " +
                     "by another program.\n\n" +
                     "Please enter a different port number for " +
-                    "the CouchDB Futon to use.";
+                    "the Couchbase Server to use.";
       endif;
 
       SetDialogTitle(DLG_ASK_TEXT, "Enter a port number");
@@ -338,7 +339,7 @@ Dlg_PortTaken:
 
         // Update the membase_console.url with the new port.
         //
-        FileInsertLine(INSTALLDIR ^ "server" ^ "couchdb_futon.url",
+        FileInsertLine(INSTALLDIR ^ "server" ^ "couchbase_console.url",
                        "URL=http://localhost:" + szPort + "/_utils",
                        1, REPLACE);
       endif;
