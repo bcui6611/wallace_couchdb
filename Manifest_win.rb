@@ -121,6 +121,9 @@ COLLECT_PLATFORM_WIN =
         FileUtils.mkdir_p("#{STARTDIR}/components/Server/etc/couchdb/local.d")
         FileUtils.cp_r(Dir.glob("#{STARTDIR}/../geocouch/etc/couchdb/local.d/*"),
                        "#{STARTDIR}/components/Server/etc/couchdb/local.d")
+        FileUtils.mkdir_p("#{STARTDIR}/components/Server/share/couchdb/www/script/test")
+        FileUtils.cp_r(Dir.glob("#{STARTDIR}/../geocouch/share/www/script/test/*"),
+                       "#{STARTDIR}/components/Server/share/couchdb/www/script/test")
       }
     },
     { :desc => "openssl",
