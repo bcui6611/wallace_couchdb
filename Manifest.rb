@@ -151,14 +151,14 @@ COLLECT_INDEPENDENT =
     },
     { :desc => "platform/bin",
       :dist => false,
-      :seq => 20,
+      :seq => 300,
       :src_dir => "./components/platform_#{os_general()}/bin",
       :dst_dir => "./components/Server/bin",
       :force => true
     },
     { :desc => "platform/var",
       :dist => false,
-      :seq => 21,
+      :seq => 310,
       :src_dir => "./components/platform_#{os_general()}/var",
       :dst_dir => "./components/Server/var",
       :force => true
