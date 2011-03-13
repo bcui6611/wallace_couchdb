@@ -56,7 +56,7 @@
 		<author>InstallShield</author>
 		<keywords>MergeModule,MSI,Database</keywords>
 		<comments>Contact:  Your local administrator</comments>
-		<template>x64;1033</template>
+		<template>Intel;1033</template>
 		<lastauthor>Administrator</lastauthor>
 		<revnumber>{3CF6374B-9AFE-4118-BB30-13565102AA54}</revnumber>
 		<lastprinted/>
