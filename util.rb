@@ -336,6 +336,7 @@ def fix_ism(path)
 	prefix = PRODUCT_VERSION.split('-')[0]
     v_parts = prefix.split('.')
     v_parts = "1.1.0a".split('.') if prefix == '1.1a'
+    v_parts = "1.1.0".split('.') if prefix == '1.1'
     ver_ism = "#{v_parts[0]}.#{v_parts[1]}.#{v_parts[2]}"
     if ver_ism.match(/^[0-9]+\.[0-9]+\.[0-9a-z]+$/)
       print "INFO: fixing ism ProductVersion to #{ver_ism}\n"
