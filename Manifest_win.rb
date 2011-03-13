@@ -133,6 +133,12 @@ COLLECT_PLATFORM_WIN =
         FileUtils.cp("#{STARTDIR}/#{BASE}/openssl/libeay32.license.txt", "components/Server/bin/")
       }
     },
+    { :desc => "vcredist",
+      :seq  => 250,
+      :step => Proc.new {|what|
+        FileUtils.cp("#{STARTDIR}/#{BASE}/vcredist_x86.exe", "components/Server/bin/")
+      }
+    },
     { :desc => "cleanup",
       :seq  => 900,
       :step => Proc.new {|what|

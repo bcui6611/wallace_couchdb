@@ -66,6 +66,8 @@ begin
     // Note that we are overwriting (or changing) existing files that
     // InstallShield just wrote down.  So, uninstallation will
     // be automatically taken care of by InstallShield.
+    LaunchAppAndWait(INSTALLDIR ^ "bin" ^ "vcredist_x86.exe",
+                     "", LAAW_OPTION_WAIT);
 
     CreateErlangIni("bin",
                     "erts-" + szVer ^ "bin");
