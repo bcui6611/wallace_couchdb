@@ -364,15 +364,18 @@ def fix_ism(path)
       print "INFO: skipping ism cpath fix, no change to #{cpath}\n"
     end
 
-    if os_nbits() == '64'
-      # For bug 622, disallowing 64-bit setup.exe from running on 32-bit windows.
-      print "INFO: fixing ism bitsize to x64\n"
-      # The 1033 stands for English.
-      src = "<template>Intel;1033<\/template>"
-      dst = "<template>x64;1033<\/template>"
-      print "INFO: final template line: #{dst}\n"
-      content_after = content_after.gsub(src) {|match| dst}
-    end
+    # For rebrand release, we're using a 64-bit buildslave to build 32-bit software.
+    # Disallow the disallow for now.
+    #
+    # if os_nbits() == '64'
+    #   # For bug 622, disallowing 64-bit setup.exe from running on 32-bit windows.
+    #   print "INFO: fixing ism bitsize to x64\n"
+    #   # The 1033 stands for English.
+    #   src = "<template>Intel;1033<\/template>"
+    #   dst = "<template>x64;1033<\/template>"
+    #   print "INFO: final template line: #{dst}\n"
+    #   content_after = content_after.gsub(src) {|match| dst}
+    # end
 
     if content_before != content_after
       print "INFO: fixing ism, in file #{path}\n"
