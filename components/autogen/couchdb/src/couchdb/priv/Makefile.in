@@ -36,7 +36,7 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-@WINDOWS_TRUE@am__append_1 = -no-undefined
+@MINGW_FALSE@@WINDOWS_TRUE@am__append_1 = -no-undefined
 locallibbin_PROGRAMS = couchjs$(EXEEXT)
 couchpriv_PROGRAMS = couchspawnkillable$(EXEEXT)
 subdir = src/couchdb/priv
@@ -79,14 +79,16 @@ am__installdirs = "$(DESTDIR)$(couchprivlibdir)" \
 	"$(DESTDIR)$(couchprivdir)"
 LTLIBRARIES = $(couchprivlib_LTLIBRARIES)
 am__DEPENDENCIES_1 =
-couch_icu_driver_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
-am_couch_icu_driver_la_OBJECTS =  \
-	couch_icu_driver_la-couch_icu_driver.lo
+@MINGW_FALSE@couch_icu_driver_la_DEPENDENCIES = $(am__DEPENDENCIES_1)
+am__couch_icu_driver_la_SOURCES_DIST = icu_driver/couch_icu_driver.c
+@MINGW_FALSE@am_couch_icu_driver_la_OBJECTS =  \
+@MINGW_FALSE@	couch_icu_driver_la-couch_icu_driver.lo
 couch_icu_driver_la_OBJECTS = $(am_couch_icu_driver_la_OBJECTS)
 couch_icu_driver_la_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) \
 	$(couch_icu_driver_la_CFLAGS) $(CFLAGS) \
 	$(couch_icu_driver_la_LDFLAGS) $(LDFLAGS) -o $@
+@MINGW_FALSE@am_couch_icu_driver_la_rpath = -rpath $(couchprivlibdir)
 PROGRAMS = $(couchpriv_PROGRAMS) $(locallibbin_PROGRAMS)
 am__objects_1 = couchjs-http.$(OBJEXT) couchjs-main.$(OBJEXT) \
 	couchjs-utf8.$(OBJEXT)
@@ -117,8 +119,8 @@ LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	$(LDFLAGS) -o $@
 SOURCES = $(couch_icu_driver_la_SOURCES) $(couchjs_SOURCES) \
 	$(couchspawnkillable_SOURCES)
-DIST_SOURCES = $(couch_icu_driver_la_SOURCES) $(couchjs_SOURCES) \
-	$(am__couchspawnkillable_SOURCES_DIST)
+DIST_SOURCES = $(am__couch_icu_driver_la_SOURCES_DIST) \
+	$(couchjs_SOURCES) $(am__couchspawnkillable_SOURCES_DIST)
 DATA = $(couchpriv_DATA)
 ETAGS = etags
 CTAGS = ctags
@@ -149,6 +151,7 @@ ECHO_N = @ECHO_N@
 ECHO_T = @ECHO_T@
 EGREP = @EGREP@
 ERL = @ERL@
+ERLANG_INCLUDE = @ERLANG_INCLUDE@
 ERLC = @ERLC@
 ERLC_FLAGS = @ERLC_FLAGS@
 EXEEXT = @EXEEXT@
@@ -159,7 +162,9 @@ HELP2MAN_EXECUTABLE = @HELP2MAN_EXECUTABLE@
 ICU_CFLAGS = @ICU_CFLAGS@
 ICU_CONFIG = @ICU_CONFIG@
 ICU_CXXFLAGS = @ICU_CXXFLAGS@
+ICU_INCLUDE = @ICU_INCLUDE@
 ICU_LIBS = @ICU_LIBS@
+ICU_LIB_DIR = @ICU_LIB_DIR@
 ICU_LOCAL_BIN = @ICU_LOCAL_BIN@
 ICU_LOCAL_CFLAGS = @ICU_LOCAL_CFLAGS@
 ICU_LOCAL_LDFLAGS = @ICU_LOCAL_LDFLAGS@
@@ -292,15 +297,22 @@ EXTRA_DIST = \
 	stat_descriptions.cfg.in
 
 CLEANFILES = stat_descriptions.cfg
-ICU_LOCAL_FLAGS = $(ICU_LOCAL_CFLAGS) $(ICU_LOCAL_LDFLAGS)
-@WINDOWS_FALSE@ICU_LOCAL_LIBS = -licuuc -licudata -licui18n
-@WINDOWS_TRUE@ICU_LOCAL_LIBS = -licuuc -licudt -licuin
-couchprivlib_LTLIBRARIES = couch_icu_driver.la
-couch_icu_driver_la_SOURCES = icu_driver/couch_icu_driver.c
-couch_icu_driver_la_LDFLAGS = -module -avoid-version \
-	$(ICU_LOCAL_FLAGS) $(am__append_1)
-couch_icu_driver_la_CFLAGS = $(ICU_LOCAL_FLAGS)
-couch_icu_driver_la_LIBADD = $(ICU_LOCAL_LIBS)
+@MINGW_TRUE@ICU_OUTPUT_DIR = icu_driver/win32
+@MINGW_TRUE@icu_driver_msbuild = $(ICU_OUTPUT_DIR)/msbuild.bat
+@MINGW_TRUE@icu_driver_vcproj = $(ICU_OUTPUT_DIR)/couch_icu_driver.vcxproj
+@MINGW_TRUE@WIN_ICU_INCLUDE = $(ICU_OUTPUT_DIR)/win_icu_include.tmp
+@MINGW_TRUE@WIN_ICU_LIB_DIR = $(ICU_OUTPUT_DIR)/win_icu_dir.tmp
+@MINGW_TRUE@WIN_ERL_INCLUDE = $(ICU_OUTPUT_DIR)/win_erl_include.tmp
+@MINGW_TRUE@COUCH_ICU_DRIVER = $(ICU_OUTPUT_DIR)/couch_icu_driver.dll
+@MINGW_FALSE@ICU_LOCAL_FLAGS = $(ICU_LOCAL_CFLAGS) $(ICU_LOCAL_LDFLAGS)
+@MINGW_FALSE@@WINDOWS_FALSE@ICU_LOCAL_LIBS = -licuuc -licudata -licui18n
+@MINGW_FALSE@@WINDOWS_TRUE@ICU_LOCAL_LIBS = -licuuc -licudt -licuin
+@MINGW_FALSE@couchprivlib_LTLIBRARIES = couch_icu_driver.la
+@MINGW_FALSE@couch_icu_driver_la_SOURCES = icu_driver/couch_icu_driver.c
+@MINGW_FALSE@couch_icu_driver_la_LDFLAGS = -module -avoid-version \
+@MINGW_FALSE@	$(ICU_LOCAL_FLAGS) $(am__append_1)
+@MINGW_FALSE@couch_icu_driver_la_CFLAGS = $(ICU_LOCAL_FLAGS)
+@MINGW_FALSE@couch_icu_driver_la_LIBADD = $(ICU_LOCAL_LIBS)
 @MINGW_TRUE@couchjs_msbuild = couch_js/win32/msbuild.bat
 @MINGW_TRUE@couchjs_vcproj = couch_js/win32/couchjs.vcxproj
 @MINGW_TRUE@WIN_JS_INCLUDE = couch_js/win32/win_js_include.tmp
@@ -384,7 +396,7 @@ clean-couchprivlibLTLIBRARIES:
 	  rm -f "$${dir}/so_locations"; \
 	done
 couch_icu_driver.la: $(couch_icu_driver_la_OBJECTS) $(couch_icu_driver_la_DEPENDENCIES) 
-	$(couch_icu_driver_la_LINK) -rpath $(couchprivlibdir) $(couch_icu_driver_la_OBJECTS) $(couch_icu_driver_la_LIBADD) $(LIBS)
+	$(couch_icu_driver_la_LINK) $(am_couch_icu_driver_la_rpath) $(couch_icu_driver_la_OBJECTS) $(couch_icu_driver_la_LIBADD) $(LIBS)
 install-couchprivPROGRAMS: $(couchpriv_PROGRAMS)
 	@$(NORMAL_INSTALL)
 	test -z "$(couchprivdir)" || $(MKDIR_P) "$(DESTDIR)$(couchprivdir)"
@@ -819,6 +831,34 @@ uninstall-am: uninstall-couchprivDATA uninstall-couchprivPROGRAMS \
 @WINDOWS_FALSE@couchspawnkillable: spawnkillable/couchspawnkillable.sh
 @WINDOWS_FALSE@	cp $< $@
 @WINDOWS_FALSE@	chmod +x $@
+
+@MINGW_TRUE@$(COUCH_ICU_DRIVER) : icu_driver/couch_icu_driver.c $(icu_driver_msbuild) $(icu_driver_vcproj)
+@MINGW_TRUE@	$(MKDIR_P) "$(couchprivlibdir)" || true
+@MINGW_TRUE@	(cd icu_driver/win32 && msbuild.bat)
+@MINGW_TRUE@	cp $(ICU_OUTPUT_DIR)/couch_icu_driver.dll $(couchprivlibdir)
+@MINGW_TRUE@	cp $(ICU_OUTPUT_DIR)/couch_icu_driver.lib $(couchprivlibdir)
+
+@MINGW_TRUE@all: $(COUCH_ICU_DRIVER)
+
+@MINGW_TRUE@$(icu_driver_msbuild): $(icu_driver_msbuild).tpl
+@MINGW_TRUE@	sed -e "s|%msbuild_dir%|$(msbuild_dir)|" \
+@MINGW_TRUE@	    -e "s|%msbuild_name%|$(msbuild_name)|" \
+@MINGW_TRUE@	< $< > $@
+
+@MINGW_TRUE@$(icu_driver_vcproj): $(icu_driver_vcproj).tpl $(WIN_ICU_INCLUDE) $(WIN_ICU_LIB_DIR) $(WIN_ERL_INCLUDE)
+@MINGW_TRUE@	sed -e "s|%ICU_INCLUDE%|`cat $(WIN_ICU_INCLUDE)`|" \
+@MINGW_TRUE@	    -e "s|%ERLANG_INCLUDE%|`cat $(WIN_ERL_INCLUDE)`|" \
+@MINGW_TRUE@	    -e "s|%ICU_LIB_DIR%|`cat $(WIN_ICU_LIB_DIR)`|" \
+@MINGW_TRUE@	< $< > $@
+
+@MINGW_TRUE@$(WIN_ICU_INCLUDE):$(ICU_INCLUDE)
+@MINGW_TRUE@	echo $< | sed -e "s|^/\([a-zA-Z]\)|\1:|" > $@
+
+@MINGW_TRUE@$(WIN_ICU_LIB_DIR):$(ICU_LIB_DIR)
+@MINGW_TRUE@	echo $< | sed -e "s|^/\([a-zA-Z]\)|\1:|" > $@
+
+@MINGW_TRUE@$(WIN_ERL_INCLUDE):$(ERLANG_INCLUDE)
+@MINGW_TRUE@	echo $< | sed -e "s|^/\([a-zA-Z]\)|\1:|" > $@
 
 @MINGW_TRUE@couchjs$(EXEEXT): $(COUCHJS_SRCS) $(couchjs_msbuild) $(couchjs_vcproj)
 @MINGW_TRUE@	@rm -f couchjs$(EXEEXT)

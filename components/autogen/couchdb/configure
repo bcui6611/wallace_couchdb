@@ -794,6 +794,8 @@ ICU_LIBS
 ICU_CXXFLAGS
 ICU_CFLAGS
 ICU_CONFIG
+ICU_LIB_DIR
+ICU_INCLUDE
 JSLIB
 msbuild_name
 msbuild_dir
@@ -811,6 +813,7 @@ FLAGS
 ERLC_FLAGS
 JS_LIB_DIR
 JS_INCLUDE
+ERLANG_INCLUDE
 OTOOL64
 OTOOL
 LIPO
@@ -5633,13 +5636,13 @@ if test "${lt_cv_nm_interface+set}" = set; then :
 else
   lt_cv_nm_interface="BSD nm"
   echo "int some_variable = 0;" > conftest.$ac_ext
-  (eval echo "\"\$as_me:5636: $ac_compile\"" >&5)
+  (eval echo "\"\$as_me:5639: $ac_compile\"" >&5)
   (eval "$ac_compile" 2>conftest.err)
   cat conftest.err >&5
-  (eval echo "\"\$as_me:5639: $NM \\\"conftest.$ac_objext\\\"\"" >&5)
+  (eval echo "\"\$as_me:5642: $NM \\\"conftest.$ac_objext\\\"\"" >&5)
   (eval "$NM \"conftest.$ac_objext\"" 2>conftest.err > conftest.out)
   cat conftest.err >&5
-  (eval echo "\"\$as_me:5642: output\"" >&5)
+  (eval echo "\"\$as_me:5645: output\"" >&5)
   cat conftest.out >&5
   if $GREP 'External.*some_variable' conftest.out > /dev/null; then
     lt_cv_nm_interface="MS dumpbin"
@@ -6844,7 +6847,7 @@ ia64-*-hpux*)
   ;;
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 6847 "configure"' > conftest.$ac_ext
+  echo '#line 6850 "configure"' > conftest.$ac_ext
   if { { eval echo "\"\$as_me\":${as_lineno-$LINENO}: \"$ac_compile\""; } >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -8046,11 +8049,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8049: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:8052: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:8053: \$? = $ac_status" >&5
+   echo "$as_me:8056: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -8385,11 +8388,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8388: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:8391: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>conftest.err)
    ac_status=$?
    cat conftest.err >&5
-   echo "$as_me:8392: \$? = $ac_status" >&5
+   echo "$as_me:8395: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s "$ac_outfile"; then
      # The compiler can only warn and ignore the option if not recognized
      # So say no if there are warnings other than the usual output.
@@ -8490,11 +8493,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8493: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:8496: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:8497: \$? = $ac_status" >&5
+   echo "$as_me:8500: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -8545,11 +8548,11 @@ else
    -e 's:.*FLAGS}\{0,1\} :&$lt_compiler_flag :; t' \
    -e 's: [^ ]*conftest\.: $lt_compiler_flag&:; t' \
    -e 's:$: $lt_compiler_flag:'`
-   (eval echo "\"\$as_me:8548: $lt_compile\"" >&5)
+   (eval echo "\"\$as_me:8551: $lt_compile\"" >&5)
    (eval "$lt_compile" 2>out/conftest.err)
    ac_status=$?
    cat out/conftest.err >&5
-   echo "$as_me:8552: \$? = $ac_status" >&5
+   echo "$as_me:8555: \$? = $ac_status" >&5
    if (exit $ac_status) && test -s out/conftest2.$ac_objext
    then
      # The compiler can only warn and ignore the option if not recognized
@@ -10929,7 +10932,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<_LT_EOF
-#line 10932 "configure"
+#line 10935 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -11025,7 +11028,7 @@ else
   lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<_LT_EOF
-#line 11028 "configure"
+#line 11031 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -11302,7 +11305,9 @@ fi
 # Check whether --with-erlang was given.
 if test "${with_erlang+set}" = set; then :
   withval=$with_erlang;
-    ERLANG_FLAGS="-I$withval"
+    ERLANG_INCLUDE="$withval"
+    ERLANG_FLAGS="-I$ERLANG_INCLUDE"
+
 
 else
 
@@ -11780,9 +11785,13 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 if test "${with_win32_icu_binaries+set}" = set; then :
   withval=$with_win32_icu_binaries;
     ICU_CONFIG="" # supposed to be a command to query options...
-    ICU_LOCAL_CFLAGS="-I$withval/include"
-    ICU_LOCAL_LDFLAGS="-L$withval/lib"
+    ICU_INCLUDE="$withval/include"
+    ICU_LOCAL_CFLAGS="-I$ICU_INCLUDE"
+    ICU_LIB_DIR="$withval/lib"
+    ICU_LOCAL_LDFLAGS="-L$ICU_LIB_DIR"
     ICU_LOCAL_BIN=$withval/bin
+
+
 
 else
 
@@ -12439,6 +12448,10 @@ if test x${IS_MINGW} = xTRUE; then
     ac_config_files="$ac_config_files src/couchdb/priv/couch_js/win32/msbuild.bat.tpl"
 
     ac_config_files="$ac_config_files src/couchdb/priv/couch_js/win32/couchjs.vcxproj.tpl"
+
+    ac_config_files="$ac_config_files src/couchdb/priv/icu_driver/win32/msbuild.bat.tpl"
+
+    ac_config_files="$ac_config_files src/couchdb/priv/icu_driver/win32/couch_icu_driver.vcxproj.tpl"
 
 fi
 cat >confcache <<\_ACEOF
@@ -13483,6 +13496,8 @@ do
     "var/Makefile") CONFIG_FILES="$CONFIG_FILES var/Makefile" ;;
     "src/couchdb/priv/couch_js/win32/msbuild.bat.tpl") CONFIG_FILES="$CONFIG_FILES src/couchdb/priv/couch_js/win32/msbuild.bat.tpl" ;;
     "src/couchdb/priv/couch_js/win32/couchjs.vcxproj.tpl") CONFIG_FILES="$CONFIG_FILES src/couchdb/priv/couch_js/win32/couchjs.vcxproj.tpl" ;;
+    "src/couchdb/priv/icu_driver/win32/msbuild.bat.tpl") CONFIG_FILES="$CONFIG_FILES src/couchdb/priv/icu_driver/win32/msbuild.bat.tpl" ;;
+    "src/couchdb/priv/icu_driver/win32/couch_icu_driver.vcxproj.tpl") CONFIG_FILES="$CONFIG_FILES src/couchdb/priv/icu_driver/win32/couch_icu_driver.vcxproj.tpl" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5 ;;
   esac
